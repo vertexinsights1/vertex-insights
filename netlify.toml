@@ -1,0 +1,24 @@
+[build]
+  command = "node scripts/build.mjs"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/contact-submit"
+  to = "/.netlify/functions/contact-submit"
+  status = 200
+
+[[redirects]]
+  from = "/api/publish-site"
+  to = "/.netlify/functions/publish-site"
+  status = 200
+
+# Security headers (CSP etc.) live in _headers so /admin gets its own policy.
