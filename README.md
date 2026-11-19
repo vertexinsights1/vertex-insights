@@ -32,3 +32,7 @@ Create the .html file, then run `node scripts/gen-headers.mjs` (rebuilds `_heade
 
 ## Before promoting
 Have `privacy.html` and `terms.html` reviewed by a qualified professional. Optional email alerts need a verified sender domain in Resend.
+
+## Repository layout
+
+Public pages live at the repository root, shared files in `assets/`, and the admin console in `admin/`. The public homepage currently reuses the About page content. Existing API handlers live in `netlify/functions/`, build tools in `scripts/`, and the database setup SQL in `supabase/migrations/`. The build publishes only public pages and assets to `dist/`; it generates `admin/config.js` from deployment configuration.

@@ -5,14 +5,14 @@ import { cpSync, mkdirSync, readFileSync, writeFileSync, readdirSync, rmSync, ex
 import { join } from 'node:path';
 
 const ROOT = process.cwd(), DIST = join(ROOT, 'dist');
-const SKIP = new Set(['dist', 'netlify', 'supabase', 'docs', 'scripts', 'node_modules', '.git', '.netlify', '.env', '.env.example', '.gitignore', 'README.md', 'netlify.toml', 'package.json']);
+const PUBLIC_FILES = new Set(['assets', 'admin', '_headers', '_redirects', 'robots.txt', 'sitemap.xml']);
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const host = (process.env.SITE_URL || process.env.URL || 'localhost:8888').replace(/^https?:\/\//, '').replace(/\/+$/, '');
 const SB = (process.env.SUPABASE_URL || '').replace(/\/$/, ''), KEY = process.env.SUPABASE_ANON_KEY || '';
 const warn = (m) => console.warn('[build] ' + m);
 
 rmSync(DIST, { recursive: true, force: true }); mkdirSync(DIST, { recursive: true });
-for (const f of readdirSync(ROOT)) if (!SKIP.has(f) && !f.endsWith('.py')) cpSync(join(ROOT, f), join(DIST, f), { recursive: true });
+for (const f of readdirSync(ROOT)) if (PUBLIC_FILES.has(f) || f.endsWith('.html')) cpSync(join(ROOT, f), join(DIST, f), { recursive: true });
 const rd = (f) => readFileSync(join(DIST, f), 'utf8'), wr = (f, s) => writeFileSync(join(DIST, f), s);
 
 async function get(table, query) {

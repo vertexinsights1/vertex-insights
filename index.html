@@ -1,39 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
-  <title>Private Admin | Vertex Insights</title>
-  <link rel="stylesheet" href="admin.css">
-  <script src="config.js"></script>
-  <script src="vendor/supabase.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vertex Insights | Independent Data &amp; Analytics Practice</title>
+<meta name="description" content="An independent analytics practice helping growing businesses turn the data they already hold into decisions they can act on. You work directly with the analyst.">
+<meta name="theme-color" content="#011C5B">
+<meta property="og:title" content="Vertex Insights | Independent Data &amp; Analytics Practice">
+<meta property="og:description" content="An independent analytics practice helping growing businesses turn the data they already hold into decisions they can act on. You work directly with the analyst.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://__SITE_URL__/">
+<meta property="og:url" content="https://__SITE_URL__/">
+<meta property="og:site_name" content="Vertex Insights">
+<meta property="og:locale" content="en_IN">
+<meta property="og:image" content="https://__SITE_URL__/assets/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <div id="loginView" class="login-wrap">
-    <div class="login-card">
-      <div class="brand-mark">VI</div><p class="eyebrow">VERTEX INSIGHTS</p><h1>Private admin</h1>
-      <p class="muted">Sign in to manage website content and enquiries.</p>
-      <form id="loginForm"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" required>
-      <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required>
-      <button class="primary full" type="submit">Sign in</button><p id="loginStatus" class="status" role="status"></p></form>
-      <p class="tiny">Account creation is disabled on this screen. Create the first owner through Supabase Auth setup.</p>
-    </div>
-  </div>
-  <div id="appView" class="app hidden">
-    <aside class="sidebar"><a class="wordmark" href="#overview"><span class="brand-mark small">VI</span><span>Vertex Insights<small>ADMIN CONSOLE</small></span></a>
-      <nav id="nav"><button class="nav-item active" data-view="overview">Overview</button><button class="nav-item" data-view="leads">Enquiries & leads</button><button class="nav-item" data-view="pages">Website pages</button><button class="nav-item" data-view="articles">Insights & articles</button><button class="nav-item" data-view="services">Services</button><button class="nav-item" data-view="media">Images</button><button class="nav-item" data-view="settings">Settings & setup</button></nav>
-      <div class="sidebar-bottom"><span id="signedInAs" class="tiny"></span><button id="signOut" class="ghost full">Sign out</button></div>
-    </aside>
-    <main class="main"><header class="topbar"><div><p class="eyebrow">OWNER WORKSPACE</p><h1 id="viewTitle">Overview</h1></div><div><button id="publishSite" class="primary">Publish changes to website</button> <span class="secure-label">● Private session</span></div></header>
-      <div id="notice" class="notice hidden" role="status"></div>
-      <section id="view-overview" class="view"><div class="stat-grid"><article class="stat"><span>Total enquiries</span><strong id="statTotal">—</strong></article><article class="stat"><span>New enquiries</span><strong id="statNew">—</strong></article><article class="stat"><span>Follow-ups due</span><strong id="statDue">—</strong></article><article class="stat"><span>Published articles</span><strong id="statArticles">—</strong></article></div><div class="panel"><div class="panel-head"><div><h2>Recent enquiries</h2><p class="muted">Latest requests received through your website.</p></div><button class="secondary" data-go="leads">View all leads</button></div><div id="recentLeads" class="table-wrap"><p class="muted">Loading…</p></div></div><div class="panel"><h2>Quick actions</h2><div class="quick-grid"><button class="quick" data-go="pages"><b>Edit website pages</b><span>Manage page copy and SEO fields</span></button><button class="quick" data-go="articles"><b>Manage insights</b><span>Create and publish articles</span></button><button class="quick" data-go="services"><b>Update services</b><span>Services use “Request a quote” only</span></button></div></div></section>
-      <section id="view-leads" class="view hidden"><div class="panel"><div class="panel-head"><div><h2>Enquiries & leads</h2><p class="muted">Private customer details. Use notes and follow-up dates to track progress.</p></div><button id="refreshLeads" class="secondary">Refresh</button></div><div class="toolbar"><input id="leadSearch" placeholder="Search name, email or organisation" aria-label="Search leads"><select id="leadFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="proposal_sent">Proposal sent</option><option value="won">Won</option><option value="lost">Lost</option></select></div><div id="leadsTable" class="table-wrap"><p class="muted">Loading…</p></div></div><div id="leadDetail" class="panel hidden"></div></section>
-      <section id="view-pages" class="view hidden"><div class="panel"><div class="panel-head"><div><h2>Website pages</h2><p class="muted">Set the SEO title and meta description for a page. The slug must match an existing page: home, about, services, industries, insights, contact, privacy or terms. Click “Publish changes to website” to make edits live.</p></div><button id="newPage" class="primary">+ Add page</button></div><div id="pagesTable" class="table-wrap"></div></div><div id="pageEditor" class="panel hidden"></div></section>
-      <section id="view-articles" class="view hidden"><div class="panel"><div class="panel-head"><div><h2>Insights & articles</h2><p class="muted">Create drafts and publish approved articles.</p></div><button id="newArticle" class="primary">+ Add article</button></div><div id="articlesTable" class="table-wrap"></div></div><div id="articleEditor" class="panel hidden"></div></section>
-      <section id="view-services" class="view hidden"><div class="panel"><div class="panel-head"><div><h2>Services</h2><p class="muted">Every service uses “Request a quote”; no fixed pricing is shown.</p></div><button id="newService" class="primary">+ Add service</button></div><div id="servicesTable" class="table-wrap"></div></div><div id="serviceEditor" class="panel hidden"></div></section>
-      <section id="view-media" class="view hidden"><div class="panel"><h2>Images</h2><p class="muted">Upload JPG, PNG, WebP or AVIF (max 5 MB). Add descriptive alt text for accessibility and search. Use an image as an article cover from the article editor.</p><form id="mediaForm" class="editor-form"><label>Image file<input name="file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" required></label><label>Alt text (describe the image)<input name="alt_text" required maxlength="200"></label><div class="wide"><button class="primary" type="submit">Upload image</button></div></form></div><div class="panel"><div id="mediaGrid" class="media-grid"></div></div></section>
-      <section id="view-settings" class="view hidden"><div class="panel"><h2>Setup status</h2><p class="muted">This package is a local implementation starter. Live services activate only after you create accounts and configure environment variables.</p><div id="setupChecks" class="check-list"></div></div><div class="panel"><h2>Public contact details</h2><p class="muted">Shown on the Connect page after the next publish. Leave blank to show none.</p><form id="contactForm" class="editor-form"><label>Contact email<input name="contact_email" type="email"></label><label>Phone / WhatsApp<input name="contact_phone" type="tel"></label><div class="wide"><button class="primary" type="submit">Save contact details</button></div></form></div><div class="panel"><h2>Security checklist</h2><ul class="checklist"><li>Never put a service-role key in <code>admin/config.js</code> or any browser code.</li><li>Disable public sign-ups in Supabase Auth.</li><li>Create the first owner profile manually using the setup guide.</li><li>Use a strong unique password and secure account email.</li><li>Configure and test email notifications before launch.</li><li>Test database RLS with a non-admin session before public launch.</li></ul></div></section>
-    </main>
-  </div>
-  <script src="admin.js"></script>
-</body></html>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hdr"><div class="container">
+<a class="brand" href="index.html" aria-label="Vertex Insights home"><img src="assets/logo.png" alt="Vertex Insights" width="131" height="46"></a>
+<button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
+<nav class="nav" id="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="industries.html">Industries</a><a href="insights.html">Insights</a><a class="btn sm" href="contact.html">Connect with us</a></nav>
+</div></header>
+<main id="main">
+<section class="pagehero"><div class="container"><div><h1>Analysis you can act on.</h1><p class="lede">We help growing businesses use the data they already hold to decide with confidence.</p></div><div class="pa"><img src="assets/ind-startups.svg" alt="" width="400" height="300" loading="lazy"></div></div></section>
+<section class="sec"><div class="container two">
+<div><h2>The data exists. Nobody can use it.</h2></div>
+<div><p class="lede">Vertex Insights is an independent analytics practice. You work directly with the person doing the work.</p>
+<p>Most growing companies already hold what they need. It sits in accounting software, spreadsheets and operating records, and never reaches the decision-maker in a usable form.</p>
+<p>We close that gap with clear reporting, financial models and research, then leave you able to run them yourself.</p></div>
+</div></section>
+<section class="sec alt"><div class="container">
+<div class="head"><h2>Four rules we work by.</h2></div>
+<div class="grid g4">
+<div class="card"><div class="num">1</div><h3>Start with the decision</h3><p>We begin with what you need to decide, then work out which data is needed. Not the other way round.</p></div>
+<div class="card"><div class="num">2</div><h3>Show our working</h3><p>Every number can be traced back to its source, and every calculation is written down.</p></div>
+<div class="card"><div class="num">3</div><h3>Say what the data can’t tell you</h3><p>We state our assumptions and the limits of the analysis, so you know how far to rely on it.</p></div>
+<div class="card"><div class="num">4</div><h3>Leave you capable</h3><p>You keep the files, the documentation and a walkthrough, so you don’t depend on us to read your own numbers.</p></div>
+</div></div></section>
+<section class="sec"><div class="container two">
+<div><h2>What we won’t do.</h2></div>
+<div><p>We don’t promise specific financial results. Analysis informs decisions, but outcomes depend on what you do with it.</p>
+<p>We don’t publish client names or results without permission, and we don’t present sample work as real client work. Anything illustrative on this site is labelled.</p>
+<p>We don’t sell tools or take commissions from software vendors, so our advice on what to use is not influenced by them.</p></div>
+</div></section>
+<section class="sec alt"><div class="container two">
+<div><h2>Who we start with.</h2></div>
+<div><p>We start with small and medium-sized businesses in India and abroad, where one clear dashboard or model can change how the owner runs the month.</p>
+<p>As the practice grows, we expect to take on larger organisations and to turn repeat work into standard methods. We’ll add services only when we can deliver them properly.</p></div>
+</div></section><section class="stats"><div class="container"><p class="kick">Straight facts</p><div class="grid g4">
+<div class="stat"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/></svg></span><b data-count="3">3</b><span>core services, each built around one decision</span></div>
+<div class="stat"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM2 20c0-3.5 3-6 7-6s7 2.5 7 6M17 5a3 3 0 010 6M19 14c2 .7 3 2.5 3 5"/></svg></span><b data-count="1">1</b><span>analyst on every project. You deal directly with the person doing the work</span></div>
+<div class="stat"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4"/></svg></span><b data-count="0" data-pre="₹">₹0</b><span>vendor commissions. Our tool advice is never paid for</span></div>
+<div class="stat"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20v-7M10 20V5M16 20V10M2 21h20"/></svg></span><b data-count="6">6</b><span>tools we work in, from Excel to Power BI and Python</span></div>
+</div></div></section>
+<section class="sec alt"><div class="container"><div class="head"><p class="kick">Where we work</p><h2>Based in India. Working worldwide.</h2><p class="lede">We work with teams across India and worldwide. Calls, screen-shares and shared files keep every project moving, wherever you are.</p></div><div class="chips"><a href="contact.html">India</a><a href="contact.html">Worldwide</a></div><img class="map" src="assets/img-reach.svg" alt="Dot map of the world with India highlighted and dashed routes to clients on every continent" width="1000" height="423" loading="lazy"></div></section>
+<section class="band"><div class="container"><div><h2>Tell us the decision you’re facing.</h2><p>We’ll reply with whether we can help and what a sensible first step looks like.</p></div><a class="btn lt" href="contact.html">Connect with us</a></div></section>
+</main>
+<footer class="ftr"><div class="container">
+<div class="fg">
+<div><span class="lg"><img src="assets/logo.png" alt="Vertex Insights" width="114" height="40"></span><p>Make data-driven decisions that accelerate growth.</p></div>
+<div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li><a href="industries.html">Industries</a></li><li><a href="insights.html">Insights</a></li></ul></div>
+<div><h4>Services</h4><ul><li><a href="services.html#bi">Business intelligence</a></li><li><a href="services.html#financial">Financial intelligence</a></li><li><a href="services.html#market">Market intelligence</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="mailto:info@vertexinsights.co.in">info@vertexinsights.co.in</a></li><li><a href="contact.html">Connect with us</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+</div>
+<div class="fb"><span>© <span id="yr">2026</span> Vertex Insights.</span><span>Sample data on this site is invented and labelled as such.</span></div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>
